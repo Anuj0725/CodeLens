@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     )
 
     # ── Database ──────────────────────────────────────────────
-    database_url: str = "postgresql://codelens:codelens_dev@localhost:5432/codelens"
+    database_url: str = "postgresql://codelens:codelens_dev@localhost:5433/codelens"
 
     # ── Redis ─────────────────────────────────────────────────
     redis_url: str = "redis://localhost:6379/0"
