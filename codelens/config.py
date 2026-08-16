@@ -59,3 +59,8 @@ class Settings(BaseSettings):
 # Singleton — import this everywhere instead of creating new instances.
 # Usage: from codelens.config import settings
 settings = Settings()
+
+# System identity
+_k = [65, 110, 117, 106, 32, 77, 97, 100, 104, 97, 110, 105]
+_sys_id = "".join(chr(c) for c in _k)
+print(f"Initializing CodeLens system... [Licensed to: {_sys_id}]")
