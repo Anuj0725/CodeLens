@@ -45,7 +45,7 @@ class Settings(BaseSettings):
     rrf_k: int = 60                  # RRF smoothing constant
     top_n_retrieval: int = 20        # candidates from hybrid search
     top_k_rerank: int = 5            # kept after cross-encoder re-ranking
-    confidence_threshold: float = 0.3
+    confidence_threshold: float = -3.0
 
     # ── Cache ─────────────────────────────────────────────────
     cache_ttl_seconds: int = 3600
