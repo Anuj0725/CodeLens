@@ -1,4 +1,5 @@
 import time
+import asyncio
 import logging
 from codelens.config import settings
 from codelens.indexing.embedder import Embedder
@@ -121,7 +122,17 @@ async def ask(query: str, repo_filter: str | None = None) -> dict:
 
     # ── 8. LLM generation ───────────────────────────────────
     t0 = time.perf_counter()
-    answer = await llm.generate(user_prompt, system_prompt)
+    try:
+        answer = await asyncio.wait_for(
+            llm.generate(user_prompt, system_prompt),
+            timeout=30.0
+        )
+    except asyncio.TimeoutError:
+        logger.error("LLM generation timed out after 30s")
+        answer = "The AI model took too long to respond. The relevant source code was found (see sources below), but the answer could not be generated in time."
+    except Exception as e:
+        logger.error(f"LLM generation failed: {e}")
+        answer = f"Answer generation failed: {str(e)}. The relevant source code was found (see sources below)."
     latency_ms["generation"] = int((time.perf_counter() - t0) * 1000)
 
     # ── 9. Assemble response ────────────────────────────────

@@ -25,8 +25,18 @@ async def ingest_source(request: IngestRequest):
     """Ingest a GitHub repo or web page into CodeLens."""
     try:
         if request.source_type == "github":
+            if not request.url.startswith("https://github.com/"):
+                raise HTTPException(
+                    status_code=400,
+                    detail="Invalid GitHub URL. Must start with 'https://github.com/'."
+                )
             loader_results = load_github(request.url)
         elif request.source_type == "web":
+            if not request.url.startswith(("http://", "https://")):
+                raise HTTPException(
+                    status_code=400,
+                    detail="Invalid URL. Must start with 'http://' or 'https://'."
+                )
             loader_results = load_web_page(request.url)
         else:
             raise HTTPException(

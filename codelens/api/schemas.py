@@ -1,11 +1,10 @@
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, Field
 
 
 class IngestRequest(BaseModel):
     """Request to ingest a source into CodeLens."""
-    source_type: str  # "github", "web", "markdown"
-    url: str
-    # For markdown: raw text can be passed instead of URL
+    source_type: str = Field(..., pattern="^(github|web)$", description="Source type: 'github' or 'web'")
+    url: str = Field(..., min_length=10, description="URL to ingest")
     raw_text: str | None = None
 
 
@@ -19,7 +18,7 @@ class IngestResponse(BaseModel):
 
 class AskRequest(BaseModel):
     """Request to ask a question."""
-    query: str
+    query: str = Field(..., min_length=3, max_length=1000, description="Your question")
     repo_filter: str | None = None
 
 
