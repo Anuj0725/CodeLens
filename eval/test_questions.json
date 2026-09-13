@@ -1,0 +1,152 @@
+[
+  {
+    "id": 1,
+    "query": "How does the Markup class escape HTML entities?",
+    "category": "code_specific",
+    "expected_chunk_ids": ["c007fc22-3c50-4b68-823e-068d849ed909", "943c910d-342b-4174-bdad-a29adbba2a02"]
+  },
+  {
+    "id": 2,
+    "query": "What does the escape_silent function do?",
+    "category": "code_specific",
+    "expected_chunk_ids": ["b921ec54-2e07-42d6-90d8-2002f543d8fd"]
+  },
+  {
+    "id": 3,
+    "query": "How does Markup.format work?",
+    "category": "code_specific",
+    "expected_chunk_ids": ["b1eb7982-da2b-4551-ac0d-44590b4dfd29"]
+  },
+  {
+    "id": 4,
+    "query": "What is the EscapeFormatter class used for?",
+    "category": "code_specific",
+    "expected_chunk_ids": ["aafb0e4f-ac46-4293-a003-1240b9c68afb"]
+  },
+  {
+    "id": 5,
+    "query": "How does Markup.join handle iterables?",
+    "category": "code_specific",
+    "expected_chunk_ids": ["1c21495f-33c9-476e-a24a-d9a83400d252"]
+  },
+  {
+    "id": 6,
+    "query": "What does the _native.py module implement?",
+    "category": "code_specific",
+    "expected_chunk_ids": ["a38ee183-6fc1-4baf-ad30-301222f8ec9d"]
+  },
+  {
+    "id": 7,
+    "query": "How does Markup.striptags remove HTML tags?",
+    "category": "code_specific",
+    "expected_chunk_ids": ["f864b602-0616-4b96-8875-7661575e631b"]
+  },
+  {
+    "id": 8,
+    "query": "What C extension does markupsafe provide in _speedups.c?",
+    "category": "code_specific",
+    "expected_chunk_ids": ["bed6fc6e-be90-450b-9586-a197e8f954dc", "e6f954b4-1ded-4603-9245-fb33840df0e2"]
+  },
+  {
+    "id": 9,
+    "query": "How does Markup.__html__ work?",
+    "category": "code_specific",
+    "expected_chunk_ids": ["7905b2ee-9eec-4a61-92d5-7c400784c88a"]
+  },
+  {
+    "id": 10,
+    "query": "What test helpers are defined in conftest.py?",
+    "category": "code_specific",
+    "expected_chunk_ids": ["d4b867b9-7313-49c1-9b80-fc21f1568b9c", "63fd5a25-dbca-4fbc-9e61-2b7cfea523c9"]
+  },
+  {
+    "id": 11,
+    "query": "How does markupsafe prevent XSS attacks?",
+    "category": "conceptual",
+    "expected_chunk_ids": ["9aeea6e1-f3f4-4996-96ae-d1cc1aaf9738"]
+  },
+  {
+    "id": 12,
+    "query": "What is the relationship between Markup and str?",
+    "category": "conceptual",
+    "expected_chunk_ids": ["e751ecc2-2e06-4ee0-9f7f-69b1b4401190", "ad90bf04-3816-4f37-80c1-f3b90e03ba05"]
+  },
+  {
+    "id": 13,
+    "query": "Why does markupsafe have both a Python and C implementation?",
+    "category": "conceptual",
+    "expected_chunk_ids": ["a38ee183-6fc1-4baf-ad30-301222f8ec9d", "bed6fc6e-be90-450b-9586-a197e8f954dc"]
+  },
+  {
+    "id": 14,
+    "query": "How are string operations made safe in markupsafe?",
+    "category": "conceptual",
+    "expected_chunk_ids": ["ad90bf04-3816-4f37-80c1-f3b90e03ba05", "82ea1816-8e83-4990-a8e8-0b59b739ea73"]
+  },
+  {
+    "id": 15,
+    "query": "What types of escaping does markupsafe perform?",
+    "category": "conceptual",
+    "expected_chunk_ids": ["943c910d-342b-4174-bdad-a29adbba2a02", "f33b41f4-5c62-4219-a3a1-2a5386ace5e2"]
+  },
+  {
+    "id": 16,
+    "query": "How does markupsafe handle objects that implement __html__?",
+    "category": "conceptual",
+    "expected_chunk_ids": ["d2bdbcf7-9f11-4b5f-88b1-518002367f1d", "943c910d-342b-4174-bdad-a29adbba2a02"]
+  },
+  {
+    "id": 17,
+    "query": "What is the purpose of the Markup class?",
+    "category": "conceptual",
+    "expected_chunk_ids": ["9aeea6e1-f3f4-4996-96ae-d1cc1aaf9738", "e751ecc2-2e06-4ee0-9f7f-69b1b4401190"]
+  },
+  {
+    "id": 18,
+    "query": "How does markupsafe integrate with template engines like Jinja2?",
+    "category": "conceptual",
+    "expected_chunk_ids": ["d2bdbcf7-9f11-4b5f-88b1-518002367f1d"]
+  },
+  {
+    "id": 19,
+    "query": "What happens when you concatenate a Markup object with a regular string?",
+    "category": "conceptual",
+    "expected_chunk_ids": ["ad90bf04-3816-4f37-80c1-f3b90e03ba05", "5bf617af-b528-407a-9b30-040560bc28b8"]
+  },
+  {
+    "id": 20,
+    "query": "How does the test suite validate escape correctness?",
+    "category": "conceptual",
+    "expected_chunk_ids": ["3c01a478-a2b4-451b-b36e-f0cecdf43a3e", "62f394f1-3c60-45ff-a3d6-1a6adea17003"]
+  },
+  {
+    "id": 21,
+    "query": "What does Markup('<em>%s</em>') produce?",
+    "category": "exact_match",
+    "expected_chunk_ids": ["ae69e980-1a2a-4422-9166-e34b3517efd1"]
+  },
+  {
+    "id": 22,
+    "query": "Where is def escape(s) defined?",
+    "category": "exact_match",
+    "expected_chunk_ids": ["943c910d-342b-4174-bdad-a29adbba2a02"]
+  },
+  {
+    "id": 23,
+    "query": "What does __all__ export in markupsafe?",
+    "category": "exact_match",
+    "expected_chunk_ids": ["943c910d-342b-4174-bdad-a29adbba2a02", "b921ec54-2e07-42d6-90d8-2002f543d8fd"]
+  },
+  {
+    "id": 24,
+    "query": "What exception class is defined in setup.py?",
+    "category": "exact_match",
+    "expected_chunk_ids": ["8b5bbeb8-03d7-469e-9b3e-328a005d6532"]
+  },
+  {
+    "id": 25,
+    "query": "What does the soft_str function do?",
+    "category": "exact_match",
+    "expected_chunk_ids": ["ad93d1f8-4125-4dd9-b459-474fe4015f48"]
+  }
+]
