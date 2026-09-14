@@ -327,10 +327,18 @@ pytest tests/ -v
 
 ---
 
-## 👨‍💻 Author
+<div align="center">
 
-**Anuj Madhani** — Built as a deep-dive into production RAG systems.
+### 👨‍💻 Author
 
-## 📄 License
+**Anuj Madhani**
 
-MIT
+Built as a deep-dive into production RAG systems — from AST-aware chunking to cross-encoder reranking.
+
+[![GitHub](https://img.shields.io/badge/GitHub-Anuj0725-181717?logo=github&logoColor=white)](https://github.com/Anuj0725)
+
+---
+
+📄 Licensed under **MIT** · © 2026 Anuj Madhani
+
+</div>
