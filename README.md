@@ -328,17 +328,11 @@ pytest tests/ -v
 ---
 
 <div align="center">
-<br>
 
 **Built by [Anuj Madhani](https://github.com/Anuj0725)** · A deep-dive into production RAG systems
 
-<br>
-
 If you found this useful, consider giving it a ⭐
-
-<br>
 
 `MIT License` · `© 2026 Anuj Madhani`
 
-<br>
 </div>
