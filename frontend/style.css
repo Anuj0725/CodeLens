@@ -1,0 +1,134 @@
+
+body { background: #000000 !important; }
+/* Custom scrollbar for a sleek dark theme */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #252b34; /* gray-700 */
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #656e7c; /* gray-600 */
+}
+
+/* Markdown styling overrides to look good on dark theme */
+.markdown-body p {
+    margin-bottom: 1rem;
+}
+
+.markdown-body pre {
+    background-color: #0b0d10 !important; /* gray-950 */
+    border: 1px solid #181d24; /* gray-800 */
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.markdown-body code {
+    background-color: #181d24; /* gray-800 */
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-family: monospace;
+    font-size: 0.875em;
+}
+
+.markdown-body pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+.markdown-body a {
+    color: #7ca7ff; /* teal-400 */
+    text-decoration: none;
+}
+
+.markdown-body a:hover {
+    text-decoration: underline;
+}
+
+.markdown-body ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.markdown-body ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3 {
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: #e7eaf0; /* gray-100 */
+}
+
+.markdown-body h1 { font-size: 1.5rem; }
+.markdown-body h2 { font-size: 1.25rem; }
+.markdown-body h3 { font-size: 1.125rem; }
+
+/* Table styling */
+.markdown-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.markdown-body th, .markdown-body td {
+    border: 1px solid #252b34; /* gray-700 */
+    padding: 0.5rem;
+    text-align: left;
+}
+
+.markdown-body th {
+    background-color: #181d24; /* gray-800 */
+}
+
+/* Inline code chips - two tiers */
+/* 1. Default (plain monospace, no fill) */
+.markdown-body p code, .markdown-body li code, .markdown-body blockquote code {
+    background: transparent !important;
+    color: #a1a1aa !important; /* text-muted */
+    border: none !important;
+    padding: 0 !important;
+    font-size: 0.9em;
+}
+
+/* 2. Emphasized code (accent fill) */
+.markdown-body p strong code, .markdown-body li strong code {
+    background-color: #6366f120 !important;
+    color: #6366f1 !important;
+    padding: 0.15em 0.4em !important;
+    border-radius: 0.375rem;
+    border: 1px solid #6366f140 !important;
+    font-weight: normal;
+}
+
+/* Standardized scrollbars */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #09090b;
+}
+::-webkit-scrollbar-thumb {
+    background: #27272a;
+    border-radius: 5px;
+    border: 2px solid #09090b;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #3f3f46;
+}

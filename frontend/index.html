@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeLens - AI Developer Assistant</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+        <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tp: {
+                            bg: '#000000',
+                            panel: '#09090b',
+                            panel2: '#121214',
+                            panel3: '#18181b',
+                            border: '#3f3f46',
+                            bordersoft: '#27272a',
+                            text: '#f4f4f5',
+                            muted: '#a1a1aa',
+                            muted2: '#71717a',
+                            accent: '#6366f1',
+                            accentHover: '#4f46e5',
+                            accentMuted: '#6366f120',
+                            accentText: '#ffffff',
+                            green: '#10b981',
+                            blue: '#3b82f6',
+                            red: '#ef4444',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- marked.js -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-tp-bg text-tp-text h-screen overflow-hidden flex flex-col md:flex-row font-sans selection:bg-blue-600 selection:text-white" x-data="app()">
+    
+    <!-- Sidebar -->
+    <aside class="w-full md:w-80 bg-tp-panel border-b md:border-b-0 md:border-r border-tp-border flex flex-col shrink-0 z-10">
+        <div class="p-6">
+            <h1 class="text-2xl font-bold text-tp-accent mb-1 flex items-center gap-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                CodeLens
+            </h1>
+            <p class="text-xs text-tp-muted2 mb-8 font-medium">AI Knowledge Assistant</p>
+
+            <!-- Ingest Section -->
+            <div class="bg-tp-panel3/50 rounded-xl p-5 mb-6 border border-tp-bordersoft/50">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-tp-muted mb-4 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    Index Data Source
+                </h2>
+                
+                <form @submit.prevent="ingestRepo" class="space-y-3">
+                    <div>
+                        <input type="url" x-model="ingestUrl" placeholder="Enter URL" required
+                            class="w-full bg-tp-panel border border-tp-bordersoft rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-tp-accent focus:ring-2 focus:ring-tp-accent/50 transition-colors placeholder-tp-muted2">
+                        <p class="text-[10px] text-tp-muted2 mt-2 ml-1">Supports any public link or documentation site.</p>
+                    </div>
+                    <button type="submit" :disabled="isIngesting"
+                        class="w-full bg-tp-accent text-tp-accentText hover:bg-tp-accentHover text-white font-medium py-2.5 px-4 rounded-lg text-sm flex justify-center items-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        <svg x-show="isIngesting" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span x-text="isIngesting ? 'Indexing...' : 'Start Indexing'"></span>
+                    </button>
+                </form>
+                
+                <div x-show="ingestMessage" x-transition class="mt-4 text-xs p-3 rounded-lg font-medium" :class="ingestSuccess ? 'bg-tp-accent/20 text-tp-accent border border-tp-accent/30' : 'bg-tp-red/20 text-tp-red border border-tp-red/30'">
+                    <span x-text="ingestMessage"></span>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div>
+                <h2 class="text-xs font-bold uppercase tracking-wider text-tp-muted mb-4 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+                    Search Filter
+                </h2>
+                <div>
+                    <input type="text" x-model="repoFilter" placeholder="e.g. pallets/markupsafe"
+                        class="w-full bg-tp-panel3 border border-tp-bordersoft rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-tp-accent focus:ring-2 focus:ring-tp-accent/50 transition-colors placeholder-gray-600">
+                </div>
+            </div>
+
+            <!-- Indexed Repositories List -->
+            <div class="mt-8 flex-1 overflow-y-auto">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-tp-muted2 mb-3 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    Indexed Data Sources
+                </h2>
+                
+                <div x-show="repositories.length === 0" class="text-xs text-tp-muted2 italic px-2">
+                    No data sources indexed yet.
+                </div>
+                
+                <ul class="space-y-1">
+                    <template x-for="repo in repositories" :key="repo">
+                        <li x-data="{ showConfirm: false }">
+                            <div class="group relative flex items-center w-full px-3 py-2 rounded-lg text-sm transition-colors cursor-pointer"
+                                :class="repoFilter === repo ? 'bg-tp-accent/20 text-tp-accent font-medium' : 'text-tp-muted hover:bg-tp-panel3 hover:text-tp-text'">
+                                
+                                <div class="flex-1 flex items-center gap-2 overflow-hidden" @click="repoFilter = repo">
+                                    <svg class="w-4 h-4 opacity-70 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                                    <span class="truncate" x-text="repo"></span>
+                                </div>
+                                
+                                <button @click.stop="showConfirm = true" 
+                                    class="opacity-0 group-hover:opacity-100 p-1.5 rounded text-tp-muted2 hover:text-tp-red hover:bg-tp-red/10 transition-all shrink-0 ml-2"
+                                    title="Delete Repository">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </div>
+                            
+                            <!-- Delete Confirmation Modal -->
+                            <div x-show="showConfirm" class="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" x-cloak>
+                                <div @click.outside="showConfirm = false" class="bg-tp-panel border border-tp-border rounded-xl p-5 max-w-sm w-full mx-4 shadow-xl">
+                                    <h3 class="text-sm font-bold text-tp-text mb-2">Delete Repository?</h3>
+                                    <p class="text-xs text-tp-muted mb-4">This will remove <span class="font-mono text-tp-accent" x-text="repo"></span> from the database. This action cannot be undone.</p>
+                                    <div class="flex justify-end gap-3">
+                                        <button @click="showConfirm = false" class="px-3 py-1.5 text-xs font-medium text-tp-muted hover:text-tp-text transition-colors">Cancel</button>
+                                        <button @click="deleteRepo(repo); showConfirm = false" class="px-3 py-1.5 bg-tp-red text-white text-xs font-medium rounded-lg hover:bg-red-600 transition-colors">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="mt-auto p-4 border-t border-tp-border text-center text-xs text-tp-muted2 font-medium">
+            &copy; 2026 Anuj Madhani
+        </div>
+    </aside>
+
+    <!-- Chat Area -->
+    <main class="flex-1 flex flex-col relative h-full bg-tp-bg">
+        <div id="chat-container" class="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 scroll-smooth">
+            
+            <div x-show="messages.length === 0" class="h-full flex flex-col items-center justify-center text-center opacity-40">
+                <svg class="w-24 h-24 text-tp-muted2 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                <h2 class="text-2xl font-medium text-tp-text">How can I help you code?</h2>
+                <p class="text-sm mt-3 max-w-md leading-relaxed">Index a repository on the left, then ask me anything about its architecture, functions, or logic.</p>
+            </div>
+
+            <template x-for="(msg, index) in messages" :key="index">
+                <div class="flex" :class="msg.role === 'user' ? 'justify-end' : 'justify-start'">
+                    <div class="group relative max-w-4xl w-full rounded-2xl p-6 shadow-sm border"
+                         :class="msg.role === 'user' ? 'bg-tp-panel3 border-tp-border text-tp-text ml-auto' : 'bg-tp-panel2 border-tp-bordersoft text-tp-text mr-auto'">
+                        
+                        <!-- Copy Message Button -->
+                        <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div class="relative group/copy" x-data="{ copied: false }">
+                                <button class="p-1.5 rounded-full text-tp-muted hover:text-tp-text hover:bg-white/10 transition-colors flex items-center justify-center"
+                                        @click="navigator.clipboard.writeText(msg.rawContent || msg.content); copied = true; setTimeout(() => copied = false, 2000)">
+                                    <svg x-show="!copied" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+                                    <svg x-show="copied" class="w-4 h-4" x-cloak fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </button>
+                                <!-- Tooltip -->
+                                <div class="absolute -bottom-9 left-1/2 -translate-x-1/2 opacity-0 group-hover/copy:opacity-100 transition-opacity pointer-events-none px-2.5 py-1.5 bg-[#1e1e1e] border border-white/5 text-white text-[11px] font-bold rounded-lg whitespace-nowrap shadow-xl z-50">
+                                    <span x-text="copied ? 'Copied!' : 'Copy'"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-2 mb-4">
+                            <template x-if="msg.role === 'user'">
+                                <div class="w-7 h-7 rounded-full bg-tp-accent text-tp-accentText/80 flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                </div>
+                            </template>
+                            <template x-if="msg.role === 'assistant'">
+                                <div class="w-7 h-7 rounded-full bg-tp-blue text-tp-accentText/80 flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                </div>
+                            </template>
+                            <span class="text-xs font-bold uppercase tracking-wider" :class="msg.role === 'user' ? 'text-tp-accent' : 'text-tp-blue'" x-text="msg.role === 'user' ? 'You' : 'CodeLens'"></span>
+                        </div>
+
+                        <div class="prose prose-invert prose-invert max-w-none text-sm md:text-base markdown-body leading-relaxed" x-html="msg.content"></div>
+                        
+                        <template x-if="msg.sources && msg.sources.length > 0">
+                            <div class="mt-6 pt-5 border-t border-tp-border" x-data="{ open: false }">
+                                <button @click="open = !open" class="flex items-center gap-2 text-xs text-tp-blue hover:text-tp-accent transition-colors font-semibold uppercase tracking-wider">
+                                    <svg class="w-4 h-4 transition-transform duration-200" :class="open ? 'rotate-90' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                    View Sources
+                                </button>
+                                <div x-show="open" class="mt-4 space-y-2">
+                                    <template x-for="source in msg.sources">
+                                        <div class="text-xs bg-tp-bg border border-tp-border p-3 rounded-lg text-tp-muted flex flex-col gap-1.5">
+                                            <div class="flex items-center gap-1.5 font-mono text-tp-text">
+                                                <svg class="w-3.5 h-3.5 text-tp-muted2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                                <span x-text="source.file_path"></span>
+                                            </div>
+                                            <span class="pl-5 text-tp-muted2 font-mono" x-text="source.chunk_identifier"></span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+
+                        <template x-if="msg.latency">
+                            <div class="mt-4 pt-4 border-t border-tp-border flex flex-wrap gap-4 text-[11px] text-tp-muted2 font-mono">
+                                <span x-show="msg.cache_hit" class="text-tp-blue font-bold bg-tp-accent/20 px-2 py-0.5 rounded">⚡ CACHE HIT</span>
+                                <span class="bg-tp-panel3 px-2 py-0.5 rounded">Total: <span x-text="msg.latency.total"></span>ms</span>
+                                <span class="bg-tp-panel3 px-2 py-0.5 rounded">Ret: <span x-text="msg.latency.retrieval"></span>ms</span>
+                                <span class="bg-tp-panel3 px-2 py-0.5 rounded">Rrk: <span x-text="msg.latency.rerank"></span>ms</span>
+                                <span class="bg-tp-panel3 px-2 py-0.5 rounded">Gen: <span x-text="msg.latency.generation"></span>ms</span>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+            
+            <div x-show="isAsking" class="flex justify-start">
+                <div class="bg-tp-panel border border-tp-border rounded-2xl p-6 w-32 flex items-center justify-center space-x-2">
+                    <div class="w-2.5 h-2.5 bg-tp-accent text-tp-accentText rounded-full animate-bounce"></div>
+                    <div class="w-2.5 h-2.5 bg-tp-accent text-tp-accentText rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
+                    <div class="w-2.5 h-2.5 bg-tp-accent text-tp-accentText rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+                </div>
+            </div>
+
+            <div id="scroll-anchor" class="h-4"></div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-4 md:p-6 bg-tp-bg/80 backdrop-blur-md border-t border-tp-border z-20">
+            <form @submit.prevent="askQuestion" class="max-w-4xl mx-auto flex items-center bg-tp-panel border border-tp-bordersoft rounded-xl focus-within:border-tp-accent focus-within:ring-2 focus-within:ring-tp-accent/50 transition-colors shadow-inner group">
+                <textarea x-model="currentQuery" @keydown.enter.prevent="if(!$event.shiftKey) askQuestion()" rows="1" placeholder="Ask a question about the code..."
+                    class="w-full bg-transparent text-tp-text text-sm pl-5 py-4 focus:outline-none resize-none overflow-hidden"
+                    style="min-height: 56px; max-height: 200px;"
+                    x-data="{ resize() { $el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px' } }"
+                    x-init="resize()"
+                    @input="resize()"></textarea>
+                
+                <div class="pr-3 pl-2 flex items-center self-center">
+                    <button type="submit" :disabled="isAsking || !currentQuery.trim()"
+                        class="w-8 h-8 flex items-center justify-center rounded-lg transition-all"
+                        :class="(isAsking || !currentQuery.trim()) ? 'bg-tp-panel2 text-tp-muted' : 'bg-tp-text text-tp-bg hover:bg-white'">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
