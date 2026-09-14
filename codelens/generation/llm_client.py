@@ -8,9 +8,12 @@ logger = logging.getLogger(__name__)
 
 class LLMClient:
     """
-    Async LLM client supporting OpenAI and Anthropic.
+    Async LLM client supporting Gemini, OpenAI, and Anthropic.
     Reads config from settings by default.
     """
+
+    # Google's OpenAI-compatible endpoint
+    _GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
 
     def __init__(
         self,
@@ -21,7 +24,10 @@ class LLMClient:
         self.provider = provider or settings.llm_provider
         self.model = model or settings.llm_model
 
-        if self.provider == "openai":
+        if self.provider == "gemini":
+            key = api_key or settings.gemini_api_key
+            self._openai = AsyncOpenAI(api_key=key, base_url=self._GEMINI_BASE_URL)
+        elif self.provider == "openai":
             key = api_key or settings.openai_api_key
             self._openai = AsyncOpenAI(api_key=key)
         elif self.provider == "anthropic":
@@ -42,7 +48,7 @@ class LLMClient:
             The LLM's response text
         """
         try:
-            if self.provider == "openai":
+            if self.provider in ("openai", "gemini"):
                 return await self._generate_openai(prompt, system_prompt)
             else:
                 return await self._generate_anthropic(prompt, system_prompt)

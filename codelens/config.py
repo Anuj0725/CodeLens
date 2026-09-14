@@ -29,10 +29,11 @@ class Settings(BaseSettings):
     redis_url: str = "redis://localhost:6379/0"
 
     # ── LLM ───────────────────────────────────────────────────
-    llm_provider: str = "openai"  # "openai" or "anthropic"
+    llm_provider: str = "gemini"  # "gemini", "openai", or "anthropic"
+    gemini_api_key: str = ""
     openai_api_key: str = ""
     anthropic_api_key: str = ""
-    llm_model: str = "gpt-4o-mini"
+    llm_model: str = "gemini-2.5-flash"
 
     # ── Embedding ─────────────────────────────────────────────
     embedding_model: str = "all-MiniLM-L6-v2"
