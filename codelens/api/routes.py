@@ -71,3 +71,35 @@ async def ask_question(request: AskRequest):
     except Exception as e:
         logger.error(f"Query failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/repositories")
+async def list_repositories():
+    """Get a list of all uniquely indexed repositories."""
+    try:
+        from codelens.database import get_pool
+        pool = await get_pool()
+        async with pool.acquire() as conn:
+            rows = await conn.fetch("SELECT DISTINCT repository FROM chunks WHERE repository IS NOT NULL ORDER BY repository")
+            repos = [row["repository"] for row in rows]
+            return {"repositories": repos}
+    except Exception as e:
+        logger.error(f"Failed to list repositories: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.delete("/repositories/{repo_path:path}")
+async def delete_repository(repo_path: str):
+    """Delete an indexed repository."""
+    try:
+        from codelens.database import get_pool
+        pool = await get_pool()
+        async with pool.acquire() as conn:
+            result = await conn.execute("DELETE FROM chunks WHERE repository = $1", repo_path)
+            deleted_count = int(result.split()[1]) if len(result.split()) > 1 else 0
+            if deleted_count == 0:
+                raise HTTPException(status_code=404, detail="Repository not found.")
+            return {"message": f"Successfully deleted {repo_path}", "chunks_deleted": deleted_count}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to delete repository {repo_path}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))

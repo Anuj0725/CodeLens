@@ -51,7 +51,7 @@ graph TD
     E --> F{Confidence Gate}
     F -->|Pass| G[Parent Context<br>Reconstruction]
     F -->|Fail| H[No Results Response]
-    G --> I[LLM Generation<br>Gemini 2.5 Flash]
+    G --> I["LLM Generation<br>Gemini 3.6 Flash"]
     I --> J[Cited Answer + Sources]
 
     K["/ingest Endpoint"] --> L["GitHub / Web / MD Loader"]

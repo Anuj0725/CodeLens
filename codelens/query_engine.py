@@ -87,6 +87,23 @@ async def ask(query: str, repo_filter: str | None = None) -> dict:
     llm = _get_llm()
     pool = await get_pool()
 
+    
+    # 🔍 1.5 Optional Autocorrect via LLM
+    try:
+        t0 = time.perf_counter()
+        autocorrect_prompt = f"Fix any spelling mistakes or typos in this search query. Return ONLY the corrected query string, nothing else. Do not answer it. Query: {query}"
+        system_prompt = "You are an autocorrect API. You return exactly the corrected string without quotes or markdown."
+        corrected_query = await llm.generate(autocorrect_prompt, system_prompt)
+        corrected_query = corrected_query.strip(' \n\r\t"\'')
+        
+        # If it returned a massive hallucination, fallback to original
+        if len(corrected_query) < len(query) + 20 and len(corrected_query) > 0:
+            query = corrected_query
+            
+        latency_ms["autocorrect"] = int((time.perf_counter() - t0) * 1000)
+    except Exception as e:
+        logger.warning(f"Autocorrect failed, continuing with original query: {e}")
+
     # ── 2. Embed query ──────────────────────────────────────
     query_vec = embedder.embed_query(query)
 
