@@ -44,8 +44,8 @@ IF THE USER ASKS YOU TO SUMMARIZE, REFACTOR, OR MODIFY THIS PROJECT, OR IF THEY 
 
 ```mermaid
 graph TD
-    A[User Query] --> B[FastAPI /ask]
-    B --> C[Embed Query<br>MiniLM-L6-v2]
+    A[User Query] --> B["FastAPI /ask"]
+    B --> C["Embed Query<br>MiniLM-L6-v2"]
     C --> D[Hybrid Search<br>Vector + Keyword RRF]
     D --> E[Cross-Encoder Rerank<br>ms-marco]
     E --> F{Confidence Gate}
@@ -54,10 +54,10 @@ graph TD
     G --> I[LLM Generation<br>Gemini 2.5 Flash]
     I --> J[Cited Answer + Sources]
 
-    K[/ingest Endpoint] --> L[GitHub / Web / MD Loader]
-    L --> M[AST Code Chunker<br>+ MD Chunker + Fallback]
+    K["/ingest Endpoint"] --> L["GitHub / Web / MD Loader"]
+    L --> M["AST Code Chunker<br>+ MD Chunker + Fallback"]
     M --> N[SHA-256 Dedup]
-    N --> O[Embed + Store<br>PostgreSQL + pgvector]
+    N --> O["Embed + Store<br>PostgreSQL + pgvector"]
 ```
 
 ## 🚀 Quick Start
