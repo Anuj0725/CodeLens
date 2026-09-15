@@ -61,7 +61,7 @@
                 <form @submit.prevent="ingestRepo" class="space-y-3">
                     <div>
                         <input type="url" x-model="ingestUrl" placeholder="Enter URL" required
-                            class="w-full bg-tp-panel border border-tp-bordersoft rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-tp-accent focus:ring-2 focus:ring-tp-accent/50 transition-colors placeholder-tp-muted2">
+                            class="w-full bg-tp-panel border border-tp-border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-tp-accent focus:ring-2 focus:ring-tp-accent/50 transition-colors placeholder-tp-muted">
                         <p class="text-[10px] text-tp-muted2 mt-2 ml-1">Supports any public link or documentation site.</p>
                     </div>
                     <button type="submit" :disabled="isIngesting"
@@ -87,7 +87,7 @@
                 </h2>
                 <div>
                     <input type="text" x-model="repoFilter" placeholder="e.g. pallets/markupsafe"
-                        class="w-full bg-tp-panel3 border border-tp-bordersoft rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-tp-accent focus:ring-2 focus:ring-tp-accent/50 transition-colors placeholder-gray-600">
+                        class="w-full bg-tp-panel3 border border-tp-border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-tp-accent focus:ring-2 focus:ring-tp-accent/50 transition-colors placeholder-tp-muted">
                 </div>
             </div>
 
