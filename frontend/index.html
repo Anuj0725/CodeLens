@@ -234,7 +234,7 @@
 
         <!-- Input Area -->
         <div class="p-4 md:p-6 bg-tp-bg/80 backdrop-blur-md border-t border-tp-border z-20">
-            <form @submit.prevent="askQuestion" class="max-w-4xl mx-auto flex items-center bg-tp-panel border border-tp-bordersoft rounded-xl focus-within:border-tp-accent focus-within:ring-2 focus-within:ring-tp-accent/50 transition-colors shadow-inner group">
+            <form @submit.prevent="askQuestion" class="max-w-4xl mx-auto flex items-center bg-tp-panel border border-tp-border rounded-xl focus-within:border-tp-accent focus-within:ring-2 focus-within:ring-tp-accent/50 transition-colors shadow-inner group">
                 <textarea x-model="currentQuery" @keydown.enter.prevent="if(!$event.shiftKey) askQuestion()" rows="1" placeholder="Ask a question..."
                     class="w-full bg-transparent text-tp-text placeholder-tp-muted text-sm pl-5 py-4 focus:outline-none resize-none overflow-hidden"
                     style="min-height: 56px; max-height: 200px;"
