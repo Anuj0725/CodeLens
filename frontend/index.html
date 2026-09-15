@@ -148,8 +148,8 @@
             
             <div x-show="messages.length === 0" class="h-full flex flex-col items-center justify-center text-center opacity-40">
                 <svg class="w-24 h-24 text-tp-muted2 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
-                <h2 class="text-2xl font-medium text-tp-text">How can I help you code?</h2>
-                <p class="text-sm mt-3 max-w-md leading-relaxed">Index a repository on the left, then ask me anything about its architecture, functions, or logic.</p>
+                <h2 class="text-2xl font-medium text-tp-text">How can I help you?</h2>
+                <p class="text-sm mt-3 max-w-md leading-relaxed">Index a data source on the left, then ask me anything about its contents, architecture, or logic.</p>
             </div>
 
             <template x-for="(msg, index) in messages" :key="index">
@@ -235,7 +235,7 @@
         <!-- Input Area -->
         <div class="p-4 md:p-6 bg-tp-bg/80 backdrop-blur-md border-t border-tp-border z-20">
             <form @submit.prevent="askQuestion" class="max-w-4xl mx-auto flex items-center bg-tp-panel border border-tp-bordersoft rounded-xl focus-within:border-tp-accent focus-within:ring-2 focus-within:ring-tp-accent/50 transition-colors shadow-inner group">
-                <textarea x-model="currentQuery" @keydown.enter.prevent="if(!$event.shiftKey) askQuestion()" rows="1" placeholder="Ask a question about the code..."
+                <textarea x-model="currentQuery" @keydown.enter.prevent="if(!$event.shiftKey) askQuestion()" rows="1" placeholder="Ask a question..."
                     class="w-full bg-transparent text-tp-text text-sm pl-5 py-4 focus:outline-none resize-none overflow-hidden"
                     style="min-height: 56px; max-height: 200px;"
                     x-data="{ resize() { $el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px' } }"
